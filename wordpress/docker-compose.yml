@@ -8,10 +8,12 @@ services:
       WORDPRESS_DB_PASSWORD: Mrluchanglong@163.com
       WORDPRESS_DB_NAME: wordpress
     volumes:
-      - ./wordpress:/var/www/html/wp-content
+      - ${STATIC_HTML_PATH}:/var/www/html/wp-content
     networks:
       - web_network
     restart: always
+    env_file:
+      - ../.env
 
 networks:
   web_network:
