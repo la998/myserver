@@ -22,19 +22,28 @@ blog.la998.com 为wordpress的访问需要mysql和php支持，其他均为纯htm
 docker network create web_network
 2.服务目录结构建议如下：
 
-myserver/.
+.
 ├── README.md
 ├── mysql
 │   ├── conf
+│   │   └── mysql.conf
 │   ├── docker-compose.yml
 │   └── init
+│       ├── 01-permissions.sql
+│       └── 02-wordpress.sql
 ├── nginx
 │   ├── conf.d
+│   │   ├── static.conf
+│   │   └── wordpress.conf
 │   ├── docker-compose.yml
 │   └── ssl
+│       ├── 8083681_www.la998.com.key
+│       ├── 8083681_www.la998.com.pem
+│       ├── 8083726_www.luchanglong.com.cn.key
+│       └── 8083726_www.luchanglong.com.cn.pem
 └── wordpress
     └── docker-compose.yml
-    
+
 启动顺序：
 1. 启动 MySQL
 cd mysql && docker-compose up -d
