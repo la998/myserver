@@ -1,0 +1,20 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ${STATIC_HTML_PATH}:/usr/share/nginx/html
+      - ./ssl:/etc/nginx/ssl
+    networks:
+      - web_network
+    restart: always
+    env_file: # 指定环境变量文件
+      - .env  # 可以是相对路径或绝对路径
+
+networks:
+  web_network:
+    external: true
