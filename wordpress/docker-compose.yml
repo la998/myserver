@@ -7,8 +7,9 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: Mrluchanglong@163.com
       WORDPRESS_DB_NAME: wordpress
+    user: "33:33"
     volumes:
-      - ${STATIC_HTML_PATH}:/var/www/html/wp-content
+      - ${STATIC_HTML_PATH}/wordpress:/var/www/html
     networks:
       - web_network
     restart: always
