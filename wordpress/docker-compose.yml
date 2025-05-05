@@ -16,7 +16,10 @@ services:
       - ./servername.conf:/etc/apache2/conf-available/servername.conf
     env_file:
       - .env
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
 networks:
   web_network:
     external: true

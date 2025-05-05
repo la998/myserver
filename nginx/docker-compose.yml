@@ -14,7 +14,10 @@ services:
       - web_network
     env_file: # 指定环境变量文件
       - .env  # 可以是相对路径或绝对路径
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
 networks:
   web_network:
     external: true
