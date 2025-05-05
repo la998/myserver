@@ -45,6 +45,16 @@ docker network create web_network
     └── docker-compose.yml
 
 启动顺序：
+luchanglong@luchanglongdeMacBook-Air html % mkdir -p wordpress 
+luchanglong@luchanglongdeMacBook-Air html % chmod -R 777 wordpress
+luchanglong@luchanglongdeMacBook-Air html % sudo chmod -R a+rwx wordpress
+0.创建网络
+docker network create web_network
+    # 检查容器是否加入 web_network
+    docker network inspect web_network
+    #---
+    docker network ls
+    docker network rm web_network
 1. 启动 MySQL
 cd mysql && docker-compose up -d
 2. 启动 WordPress

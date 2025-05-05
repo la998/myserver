@@ -1,3 +1,4 @@
+# nginx/docker-compose.yml
 services:
   nginx:
     image: nginx:alpine
@@ -11,7 +12,6 @@ services:
       - ./ssl:/etc/nginx/ssl
     networks:
       - web_network
-    restart: always
     env_file: # 指定环境变量文件
       - .env  # 可以是相对路径或绝对路径
 

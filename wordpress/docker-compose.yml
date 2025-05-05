@@ -1,18 +1,19 @@
+# wordpress/docker-compose.yml
 services:
   wordpress:
-    image: wordpress:php8.2-apache
+    image: wordpress:php8.0-apache
     container_name: wordpress
     environment:
       WORDPRESS_DB_HOST: mysql
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: Mrluchanglong@163.com
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: "Mrluchanglong@163.com"
       WORDPRESS_DB_NAME: wordpress
     user: "33:33"
-    volumes:
-      - ${STATIC_HTML_PATH}/wordpress:/var/www/html
     networks:
       - web_network
-    restart: always
+    volumes:
+      - ${STATIC_HTML_PATH}/wordpress:/var/www/html
+      - ./servername.conf:/etc/apache2/conf-available/servername.conf
     env_file:
       - .env
 

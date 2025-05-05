@@ -1,33 +1,36 @@
+# mysql/docker-compose.yml
 services:
   mysql:
     image: mysql:8.0.31
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: "Mrluchanglong@163.com"
       MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: "Mrluchanglong@163.com"
+      MYSQL_ROOT_PASSWORD: "Mrluchanglong@163.com"
       TZ: Asia/Shanghai
     volumes:
       - ./conf/mysql.conf:/etc/mysql/conf.d/custom.cnf
       - ./init:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-          cpus: "0.5"
-    networks:
-      - web_network
-    restart: always
     ports:
       - "3306:3306"
-    command: 
+    networks:
+      - web_network
+    command:
       --lower_case_table_names=1
       --performance-schema=OFF
       --default-authentication-plugin=mysql_native_password
       --host_cache_size=0
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
 volumes:
   mysql_data:  # 声明持久化卷
-  
+
 networks:
   web_network:
+    name: web_network
     external: true
