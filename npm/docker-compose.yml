@@ -1,0 +1,26 @@
+# npm/docker-compose.yml
+services:
+    app:
+        image: 'jc21/nginx-proxy-manager:2.12.3'
+        container_name: npm
+        restart: unless-stopped
+        ports:
+            - '80:80'    # HTTP
+            - '443:443'  # HTTPS
+            - '81:81'    # Admin UI
+        volumes:
+            - ./data:/data
+            - ./letsencrypt:/etc/letsencrypt
+            - ${STATIC_HTML_PATH}:/opt/static_sites  # 挂载静态站点目录
+        networks:
+            - web_network
+        env_file:
+            - .env
+        deploy:
+            resources:
+                limits:
+                    memory: 512m
+
+networks:
+    web_network:
+        external: true

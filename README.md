@@ -40,9 +40,26 @@ cd mysql && docker-compose up -d
 ```
 cd ../wordpress && docker-compose up -d
 ```
-3. 启动 Nginx
+3. 启动 Nginx（和Nginx Proxy Manager启动一个就可以）
 ```
-cd ../nginx && docker-compose up -d
+cd ../nginx && docker-compose up -d  #使用nginx
 ```
+4. 启动 Nginx Proxy Manager 
+```
+cd ../npm && docker-compose up -d   #使用npm
+```
+#### npm配置
 
-#### 配置ssl证书
+对于每个静态站点（如 UnityDocumentation、ace 等），在 NPM 界面中创建静态主机
+
+默认初始账号密码
+* 用户名：admin@example.com
+* 密码：changeme
+* 使用Nginx Proxy Manager时，不需要使用Nginx，直接代替nginx。
+* 访问 http://your-server-ip:81
+* 添加 Proxy Host → 选择 Static Files 类型
+  - 配置示例：
+  - Domain Names: unity.la998.com
+  - Path: /opt/static_sites/UnityDocumentation
+  - 其他保持默认
+
