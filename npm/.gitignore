@@ -1,0 +1,3 @@
+# 忽略数据文件和证书
+data/
+letsencrypt/
