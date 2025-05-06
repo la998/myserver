@@ -56,10 +56,64 @@ cd ../npm && docker-compose up -d   #使用npm
 * 用户名：admin@example.com
 * 密码：changeme
 * 使用Nginx Proxy Manager时，不需要使用Nginx，直接代替nginx。
-* 访问 http://your-server-ip:81
-* 添加 Proxy Host → 选择 Static Files 类型
-  - 配置示例：
-  - Domain Names: unity.la998.com
-  - Path: /opt/static_sites/UnityDocumentation
-  - 其他保持默认
 
+#### 从nginx迁移到npm
+1. 静态站点迁移（以 UnityDocumentation 为例）
+* 访问管理界面：http://服务器IP:81
+* 创建静态站点：
+   - Domain Names：unity.la998.com, unity.la998.test
+   - Scheme：Static Files
+   - Path：/opt/static_sites/UnityDocumentation
+* SSL 配置：
+   - 点击 SSL 标签
+   - 选择已有证书 或 申请 Let's Encrypt 证书
+   - 强制 HTTPS 勾选 Force SSL
+
+#### WordPress 代理配置
+1. 创建代理规则：
+  - Domain Names：blog.la998.com, www.luchanglong.com.cn, luchanglong.com.cn
+  - Scheme：http
+  - Forward Hostname/IP：wordpress（容器名称） 
+  - Forward Port：80
+
+2. 高级代理配置：
+```
+# 在 "Advanced" 标签页添加：
+proxy_buffer_size 128k;
+proxy_buffers 4 256k;
+proxy_busy_buffers_size 256k;
+```
+3. SSL 配置：
+  - 上传现有证书或申请新证书
+  - 证书路径对应容器内：
+```
+/etc/nginx/ssl/8083681_www.la998.com.pem → /data/ssl/certificate_xxx.pem
+/etc/nginx/ssl/8083681_www.la998.com.key → /data/ssl/certificate_xxx.key
+```
+4. 路径重写需求
+* 若某个站点需要特殊重写规则（如 Laravel）：
+```
+# 在 "Advanced" 标签页添加：
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
+5. 自定义错误页面
+* 在 Custom Locations 中添加：
+```
+error_page 404 /custom_404.html;
+location = /custom_404.html {
+    root /opt/static_sites/errors;
+    internal;
+}
+```
+6. 性能优化建议
+* 在 Dashboard → Settings 中开启 Brotli 压缩 
+* 对静态站点启用缓存：
+```
+nginx
+location ~* \.(jpg|css|js)$ {
+expires 30d;
+add_header Cache-Control "public";
+}
+```
