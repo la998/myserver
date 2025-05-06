@@ -1,3 +1,0 @@
-2025/05/06 15:06:03 [error] 576#576: *63723 directory index of "/opt/static_sites/layim-v3.7.8/" is forbidden, client: 112.94.76.139, server: layim.la998.com, request: "GET / HTTP/1.1", host: "layim.la998.com", referrer: "http://8.134.37.201:81/"
-2025/05/06 15:06:04 [error] 576#576: *63723 directory index of "/opt/static_sites/layim-v3.7.8/" is forbidden, client: 112.94.76.139, server: layim.la998.com, request: "GET / HTTP/1.1", host: "layim.la998.com", referrer: "http://8.134.37.201:81/"
-2025/05/06 15:06:13 [error] 576#576: *63723 directory index of "/opt/static_sites/layim-v3.7.8/" is forbidden, client: 112.94.76.139, server: layim.la998.com, request: "GET / HTTP/1.1", host: "layim.la998.com", referrer: "http://8.134.37.201:81/"
