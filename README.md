@@ -1,5 +1,13 @@
 ## Ubuntu24 配置服务器环境
 
+#### 重启服务器后启动顺序
+```
+docker start mysql
+docker start wordpress
+docker start npm
+#启动完成
+```
+
 #### 服务器安装docker、docker-compose
     略
 #### 文件目录结构和nginx域名映射
