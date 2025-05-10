@@ -1,3 +1,10 @@
+#### 更新/修改
+* 本目录 ./keycloak 为仓库：https://gitee.com/7688/mykeycloak.git
+* 作为外部仓库合并进当前项目，单独管理，子模块保持独立仓库，需单独提交更新
+* 若外部仓库更新，可拉取最新代码并合并：
+```
+git subtree pull --prefix=libs/external-repo external-repo main --squash
+```
 #### 服务器启动服务
 ```
 KC_ENV=pro docker-compose --env-file .env.pro down
