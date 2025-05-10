@@ -1,0 +1,69 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.0
+    container_name: keycloak
+    env_file:
+      - .env.${KC_ENV:-dev}  # 动态加载环境文件
+    environment:
+      - KC_TRANSACTION_XA_ENABLED=false
+      - KC_CACHE=local
+      - KC_METRICS_ENABLED=${KC_METRICS_ENABLED:-false}  # 允许环境变量覆盖
+      - KC_CACHE_STACK=kubernetes
+      - KC_HEALTH_ENABLED=${KC_HEALTH_ENABLED:-false}
+    command:
+      - ${KC_COMMAND:-start-dev}  # 根据环境文件选择模式
+    ports:
+      - "${KC_HTTP_PORT:-8080}:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - web_network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      mysql:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+
+  mysql:
+    image: mysql:8.0.31
+    container_name: keycloak_mysql
+    env_file:
+      - .env.${KC_ENV:-dev}
+    environment:
+      - TZ=Asia/Shanghai
+    command:
+      - --performance_schema=OFF
+      - --skip-ssl
+      - --default-authentication-plugin=mysql_native_password
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"  # 端口可配置化
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./init:/docker-entrypoint-initdb.d
+      - keycloak_mysql_data:/var/lib/mysql
+    networks:
+      - web_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--user=root", "--password=$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+volumes:
+  keycloak_mysql_data:
+
+networks:
+  web_network:  # 定义外部网络
+    external: true  # 必须预先创建该网络
